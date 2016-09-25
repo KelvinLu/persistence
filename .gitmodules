@@ -1,0 +1,3 @@
+[submodule "photos"]
+	path = photos
+	url = git@github.com:persist666/photos.git
