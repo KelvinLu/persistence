@@ -27,9 +27,14 @@ module Bootstrap
         FileUtils.mkdir_p File.join(@@base_dir, '_resized', d_slug)
         File.write(File.join(@@base_dir, d_slug + '.metadata'), JSON.generate({
           title: d_slug,
-          description: ''
+          description: 'This gallery has no description... how boring.'
         })) unless File.exists? File.join(@@base_dir, d_slug + '.metadata')
       end
+
+      File.write(File.join(@@base_dir, '_index.metadata'), JSON.generate({
+        title: 'My cool photoblog',
+        photo_dirs: @@photo_dirs
+      })) unless File.exists? File.join(@@base_dir + '_index.metadata')
     end
   end
 

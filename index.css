@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+
+    background: black;
+    color: white;
+    font-family: 'Lora', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Raleway', serif;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.66);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: white;
+}
+
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
+
+div.column-middle {
+    width: 66%;
+    position: relative;
+    top: 33%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+div.photo-dir-card {
+    position: relative;
+
+    transition: background-color 0.2s ease;
+    background-color: white;
+    color: black;
+
+    padding: 2em;
+
+    cursor: pointer;
+}
+
+div.photo-dir-card:hover {
+    background-color: #F4EAFF;
+}
+
+span.link {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+div#shroud {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: black;
+    transition: opacity 0.1s ease;
+    opacity: 1.0;
+    pointer-events: auto;
+}

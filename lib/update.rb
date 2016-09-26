@@ -17,6 +17,7 @@ module Update
     @@base = File.basename @@base_dir
 
     @@gallery_erb = ERB.new File.read 'gallery.html.erb'
+    @@index_erb = ERB.new File.read 'index.html.erb'
 
     check
   end
@@ -46,6 +47,8 @@ module Update
       generate_resize photo_dir, blob_hashes
       generate_gallery photo_dir
     end
+
+    generate_index
 
     File.write(File.join(@@base_dir, 'Hashfile'), YAML.dump(orig_hashes))
   end
@@ -125,12 +128,29 @@ module Update
       manifest: JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.manifest')))
     }
 
-    rendered = Gallery.new(render).render(@@gallery_erb)
+    rendered = RenderHash.new(render).render(@@gallery_erb)
     File.write(File.join(@@base_dir, "#{photo_dir}.html"), rendered)
+  end
+
+  def self.generate_index
+    puts "~ index"
+
+    render = {
+        metadata: JSON.parse(File.read(File.join(@@base_dir, '_index.metadata'))),
+    }
+
+    render[:metadata]['photo_dirs'].map! { |photo_dir| {
+        'name' => photo_dir,
+        'description' => JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.metadata')))['description'],
+        'count' => JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.manifest'))).count
+    }}
+
+    rendered = RenderHash.new(render).render(@@index_erb)
+    File.write(File.join(@@base_dir, "_index.html"), rendered)
   end
 end
 
-class Gallery < OpenStruct
+class RenderHash < OpenStruct
   def render(template)
     template.result(binding)
   end

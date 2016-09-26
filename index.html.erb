@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title><%= metadata['title'] %></title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/daneden/animate.css/master/animate.css">
+        <link href="https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora|Raleway">
+        <link rel="stylesheet" type="text/css" href="/index.css">
+    </head>
+    <body>
+        <div class="column-middle">
+            <div>
+                <h1><%= metadata['title'] %></h1>
+            </div>
+
+            <% metadata['photo_dirs'].each do |photo_dir| %>
+            <a id="<%= photo_dir['name'] %>" data-gallery-url="./<%= photo_dir['name'] %>.html">
+                <div class="photo-dir-card">
+                    <h2><%= photo_dir['name'] %></h2>
+                    <span style="font-style: italic;"><%= photo_dir['count'] %> photo<% if photo_dir['count'] > 1 %>s<% end %></span>
+                    <p><%= photo_dir['description'] %></p>
+                    <span class='link'><i class="fa fa-external-link"></i></span>
+                </div>
+            </a>
+            <% end %>
+        </div>
+
+        <div id="shroud">
+        </div>
+
+        <script>
+            shroud_lock = true;
+
+            window.setTimeout(function() {
+                document.querySelector('div#shroud').style.opacity = 0.0;
+                document.querySelector('div#shroud').style.pointerEvents = "none";
+                shroud_lock = false;
+            }, 200);
+
+            <% metadata['photo_dirs'].each do |photo_dir| %>
+            document.querySelector('a#<%= photo_dir['name'] %>').addEventListener('click', function() {
+                if (!shroud_lock) {
+                    document.querySelector('div#shroud').style.opacity = 1.0;
+                    window.setTimeout(function(){
+                        window.location.href = "<%= photo_dir['name'] %>.html"
+                    }, 100);
+                }
+            });
+            <% end %>
+        </script>
+    </body>
+</html>

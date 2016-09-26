@@ -125,3 +125,23 @@ span.control#down {
     left: 50%;
     transform: translateX(50%);
 }
+
+a#index {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+}
+
+div#shroud {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: black;
+    transition: opacity 0.1s ease;
+    opacity: 1.0;
+    pointer-events: auto;
+}

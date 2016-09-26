@@ -20,6 +20,8 @@
                         <p><%= metadata['description'] %></p>
                     </div>
                 </div>
+
+                <a id="index"><span class="control"><i class="fa fa-2x fa-times-circle-o"></i></span></a>
             </div>
             <% manifest.each do |photo| %>
             <div id="<%= photo['basename'] %>" class="photo frame" shunt-frame>
@@ -28,9 +30,12 @@
                 <span id='up' class='control'><i class="fa fa-2x fa-angle-up"></i></span>
 
                 <span id='back' class='control'><i class="fa fa-times-circle-o"></i></span>
-                <span id='asset' class='control'><a href="<%= photo['filename'] %>"><i class="fa fa-share-square-o"></i></a></span>
+                <span id='asset' class='control'><a target="_blank" href="<%= photo['filename'] %>"><i class="fa fa-share-square-o"></i></a></span>
             </div>
             <% end %>
+        </div>
+
+        <div id="shroud">
         </div>
 
         <script src="https://cdn.rawgit.com/KelvinLu/lookiehere.js/master/lookiehere.js"></script>
@@ -124,6 +129,23 @@
             ], {
                 default: '_intro',
                 saveWithHash: true,
+            });
+
+            shroud_lock = true;
+
+            window.setTimeout(function() {
+                document.querySelector('div#shroud').style.opacity = 0.0;
+                document.querySelector('div#shroud').style.pointerEvents = "none";
+                shroud_lock = false;
+            }, 200);
+
+            document.querySelector('a#index').addEventListener('click', function() {
+                if (!shroud_lock) {
+                    document.querySelector('div#shroud').style.opacity = 1.0;
+                    window.setTimeout(function(){
+                        window.location.href = "./_index.html"
+                    }, 100);
+                }
             });
         </script>
     </body>
