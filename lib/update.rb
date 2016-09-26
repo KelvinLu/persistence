@@ -9,12 +9,10 @@ require 'ostruct'
 module Update
   @@base_dir = ''
   @@photo_dirs = []
-  @@base = ''
 
   def self.do(directory, photo_dirs)
     @@base_dir = File.absolute_path directory
     @@photo_dirs = photo_dirs
-    @@base = File.basename @@base_dir
 
     @@gallery_erb = ERB.new File.read 'gallery.html.erb'
     @@index_erb = ERB.new File.read 'index.html.erb'
@@ -77,9 +75,9 @@ module Update
 
       manifest << {
         basename: f,
-        filename: File.join('/', @@base, photo_dir, f),
+        filename: File.join('/', photo_dir, f),
         hash: blob_hashes[f],
-        resized: File.join('/', @@base, '_resized', photo_dir, blob_hashes[f] + File.extname(f))
+        resized: File.join('/', '_resized', photo_dir, blob_hashes[f] + File.extname(f))
       }
     end
     manifest.each do |o|
@@ -136,7 +134,7 @@ module Update
     puts "~ index"
 
     render = {
-        metadata: JSON.parse(File.read(File.join(@@base_dir, '_index.metadata'))),
+        metadata: JSON.parse(File.read(File.join(@@base_dir, 'index.metadata'))),
     }
 
     render[:metadata]['photo_dirs'].map! { |photo_dir| {
@@ -146,7 +144,7 @@ module Update
     }}
 
     rendered = RenderHash.new(render).render(@@index_erb)
-    File.write(File.join(@@base_dir, "_index.html"), rendered)
+    File.write(File.join(@@base_dir, "index.html"), rendered)
   end
 end
 

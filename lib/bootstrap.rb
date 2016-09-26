@@ -11,10 +11,17 @@ module Bootstrap
     @@base_dir = File.absolute_path directory
     puts "Bootstrapping #{@@base_dir}"
 
+    assets
     directories
     hashfile
 
     @@photo_dirs
+  end
+
+  def self.assets
+    ['gallery.css', 'index.css'].each do |f|
+      `cp #{f} #{@@base_dir}`
+    end
   end
 
   def self.directories
@@ -31,10 +38,10 @@ module Bootstrap
         })) unless File.exists? File.join(@@base_dir, d_slug + '.metadata')
       end
 
-      File.write(File.join(@@base_dir, '_index.metadata'), JSON.generate({
+      File.write(File.join(@@base_dir, 'index.metadata'), JSON.generate({
         title: 'My cool photoblog',
         photo_dirs: @@photo_dirs
-      })) unless File.exists? File.join(@@base_dir + '_index.metadata')
+      })) unless File.exists? File.join(@@base_dir + 'index.metadata')
     end
   end
 
