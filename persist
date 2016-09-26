@@ -3,7 +3,7 @@
 require_relative 'lib/bootstrap'
 require_relative 'lib/update'
 
-BASE_DIR = './pictures-in-passing'
+BASE_DIR = './pictures-in-passing.github.io'
 
 photo_dirs = Bootstrap.do(BASE_DIR)
 Update.do(BASE_DIR, photo_dirs)

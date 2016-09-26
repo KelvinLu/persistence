@@ -41,7 +41,7 @@ module Bootstrap
       File.write(File.join(@@base_dir, 'index.metadata'), JSON.generate({
         title: 'My cool photoblog',
         photo_dirs: @@photo_dirs
-      })) unless File.exists? File.join(@@base_dir + 'index.metadata')
+      })) unless File.exists? File.join(@@base_dir, 'index.metadata')
     end
   end
 
