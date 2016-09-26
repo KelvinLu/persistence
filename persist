@@ -1,1 +1,9 @@
 #!/usr/bin/env ruby
+
+require_relative 'lib/bootstrap'
+require_relative 'lib/update'
+
+BASE_DIR = './photos'
+
+photo_dirs = Bootstrap.do(BASE_DIR)
+Update.do(BASE_DIR, photo_dirs)
