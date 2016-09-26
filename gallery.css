@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+
+    background: black;
+    font-family: 'Lora', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Raleway', serif;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.66);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: white;
+}
+
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
+
+div#main-content {
+    width: 100vw;
+    height: 100vh;
+}
+
+div.frame {
+    width: 100vw;
+    height: 100vh;
+
+    background: black;
+    color: white;
+}
+
+div.column-l33 {
+    width: 33%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    padding-bottom: 10em;
+}
+
+div.column-r66 {
+    width: 66%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    padding-bottom: 10em;
+}
+
+div.column-middle {
+    width: 66%;
+    position: relative;
+    top: 33%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+img.sidenail {
+    width: 100%;
+    height: auto;
+
+    transition: opacity 0.2s ease;
+    opacity: 0.6;
+    filter: blur(2px);
+}
+
+img.sidenail:hover {
+    opacity: 0.8;
+    filter: blur(1px);
+
+    cursor: pointer;
+}
+
+img.resized {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: 2px white solid;
+}
+
+span.control {
+    opacity: 0.5;
+}
+
+span.control:hover {
+    transition: opacity 0.2s ease;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+span.control#asset {
+    text-decoration: none;
+    position: absolute;
+    top: 3em;
+    left: 1em;
+}
+
+span.control#back {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+}
+
+span.control#up {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(50%);
+}
+
+span.control#down {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(50%);
+}

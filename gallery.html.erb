@@ -1,0 +1,130 @@
+<html>
+    <head>
+        <title><%= metadata['title'] %></title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/daneden/animate.css/master/animate.css">
+        <link href="https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora|Raleway">
+        <link rel="stylesheet" type="text/css" href="/gallery.css">
+    </head>
+    <body>
+        <div id="main-content">
+            <div id="_intro" class="frame" shunt-frame>
+                <div class="column-middle">
+                    <div class="column-l33">
+                        <% manifest.each do |photo| %>
+                            <img id="link_<%= photo['hash'] %>" src="<%= photo['resized'] %>" class="sidenail"><br/>
+                        <% end %>
+                    </div>
+                    <div class="column-r66">
+                        <h1><%= metadata['title'] %></h1>
+                        <p><%= metadata['description'] %></p>
+                    </div>
+                </div>
+            </div>
+            <% manifest.each do |photo| %>
+            <div id="<%= photo['basename'] %>" class="photo frame" shunt-frame>
+                <img src="<%= photo['resized'] %>" class="resized lookiehere" data-full-image-url="<%= photo['filename'] %>">
+                <span id='down' class='control'><i class="fa fa-2x fa-angle-down"></i></span>
+                <span id='up' class='control'><i class="fa fa-2x fa-angle-up"></i></span>
+
+                <span id='back' class='control'><i class="fa fa-times-circle-o"></i></span>
+                <span id='asset' class='control'><a href="<%= photo['filename'] %>"><i class="fa fa-share-square-o"></i></a></span>
+            </div>
+            <% end %>
+        </div>
+
+        <script src="https://cdn.rawgit.com/KelvinLu/lookiehere.js/master/lookiehere.js"></script>
+        <script src="https://cdn.rawgit.com/KelvinLu/shuntdiv.js/master/shuntdiv.js"></script>
+        <script type="text/javascript">
+            lookiehere.options({ activateByTab: false, attribute: 'data-full-image-url' });
+            lookiehere.init();
+
+            galleryShunts = new ShuntDiv(document.getElementById('main-content'), [
+                <% manifest.each do |photo| %>
+                new ShuntDiv.Transition('_intro', '<%= photo['basename'] %>', 'dualAnimateCss', 'click', {
+                    id: 'link_<%= photo['hash'] %>',
+                    exit_animation_name:  'fadeOut',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInRight',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= photo['basename'] %>', '_intro', 'dualAnimateCss', 'click', {
+                    id: 'back',
+                    exit_animation_name:  'fadeOutRight',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeIn',
+                    enter_animation_function: 'ease',
+                }),
+                <% end %>
+                <% if manifest.count > 1 %><% ((0..manifest.count-2).zip((1..manifest.count-1))).push([manifest.count-1, 0]).each do |i, j| %>
+                new ShuntDiv.Transition('<%= manifest[i]['basename'] %>', '<%= manifest[j]['basename'] %>', 'dualAnimateCss', 'keypress', {
+                    key: 32,
+                    exit_animation_name:  'fadeOutUp',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInUp',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[i]['basename'] %>', '<%= manifest[j]['basename'] %>', 'dualAnimateCss', 'keypress', {
+                    key: 40,
+                    exit_animation_name:  'fadeOutUp',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInUp',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[j]['basename'] %>', '<%= manifest[i]['basename'] %>', 'dualAnimateCss', 'keypress', {
+                    key: 38,
+                    exit_animation_name:  'fadeOutDown',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInDown',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[i]['basename'] %>', '<%= manifest[j]['basename'] %>', 'dualAnimateCss', 'wheel', {
+                    deltaY: 20,
+                    exit_animation_name:  'fadeOutUp',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInUp',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[j]['basename'] %>', '<%= manifest[i]['basename'] %>', 'dualAnimateCss', 'wheel', {
+                    deltaY: -20,
+                    exit_animation_name:  'fadeOutDown',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInDown',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[i]['basename'] %>', '<%= manifest[j]['basename'] %>', 'dualAnimateCss', 'click', {
+                    id: 'down',
+                    exit_animation_name:  'fadeOutUp',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInUp',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[j]['basename'] %>', '<%= manifest[i]['basename'] %>', 'dualAnimateCss', 'click', {
+                    id: 'up',
+                    exit_animation_name:  'fadeOutDown',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInDown',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[i]['basename'] %>', '<%= manifest[j]['basename'] %>', 'dualAnimateCss', 'touchSwipe', {
+                    swipe: 'up',
+                    exit_animation_name:  'fadeOutUp',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInUp',
+                    enter_animation_function: 'ease',
+                }),
+                new ShuntDiv.Transition('<%= manifest[j]['basename'] %>', '<%= manifest[i]['basename'] %>', 'dualAnimateCss', 'touchSwipe', {
+                    swipe: 'down',
+                    exit_animation_name:  'fadeOutDown',
+                    exit_animation_function: 'ease',
+                    enter_animation_name: 'fadeInDown',
+                    enter_animation_function: 'ease',
+                }),
+                <% end %><% end %>
+            ], {
+                default: '_intro',
+                saveWithHash: true,
+            });
+        </script>
+    </body>
+</html>

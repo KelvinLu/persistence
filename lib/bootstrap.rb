@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'yaml'
+require 'json'
 require_relative 'utils'
 
 module Bootstrap
@@ -22,7 +23,12 @@ module Bootstrap
         d_slug = Utils.slugify d
         FileUtils.mv d, d_slug unless d == d_slug
         @@photo_dirs << d_slug
+
         FileUtils.mkdir_p File.join(@@base_dir, '_resized', d_slug)
+        File.write(File.join(@@base_dir, d_slug + '.metadata'), JSON.generate({
+          title: d_slug,
+          description: ''
+        })) unless File.exists? File.join(@@base_dir, d_slug + '.metadata')
       end
     end
   end

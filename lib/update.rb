@@ -3,6 +3,8 @@ require 'pathname'
 require 'yaml'
 require 'json'
 require 'mini_magick'
+require 'erb'
+require 'ostruct'
 
 module Update
   @@base_dir = ''
@@ -13,6 +15,8 @@ module Update
     @@base_dir = File.absolute_path directory
     @@photo_dirs = photo_dirs
     @@base = File.basename @@base_dir
+
+    @@gallery_erb = ERB.new File.read 'gallery.html.erb'
 
     check
   end
@@ -115,5 +119,19 @@ module Update
 
   def self.generate_gallery(photo_dir)
     puts "~ gallery #{photo_dir}"
+
+    render = {
+      metadata: JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.metadata'))),
+      manifest: JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.manifest')))
+    }
+
+    rendered = Gallery.new(render).render(@@gallery_erb)
+    File.write(File.join(@@base_dir, "#{photo_dir}.html"), rendered)
+  end
+end
+
+class Gallery < OpenStruct
+  def render(template)
+    template.result(binding)
   end
 end
