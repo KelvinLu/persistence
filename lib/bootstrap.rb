@@ -7,13 +7,13 @@ module Bootstrap
   @@base_dir = ''
   @@photo_dirs = []
 
-  def self.do(directory)
+  def self.do(directory, clean=false)
     @@base_dir = File.absolute_path directory
     puts "Bootstrapping #{@@base_dir}"
 
     assets
     directories
-    hashfile
+    hashfile clean
 
     @@photo_dirs
   end
@@ -45,13 +45,14 @@ module Bootstrap
     end
   end
 
-  def self.hashfile
+  def self.hashfile(clean=false)
     h = File.join(@@base_dir, 'Hashfile')
 
-    orig_hashes = File.exists?(h) ? YAML.load(File.read(h)) : {}
+    orig_hashes = {}
+    orig_hashes = YAML.load File.read h if (File.exists?(h) and not clean)
 
     File.open(h, 'w') do |f|
-      f.write YAML.dump Hash[@@photo_dirs.map { |d| [d, orig_hashes[d] || '------'] }]
+      f.write(YAML.dump Hash[@@photo_dirs.map { |d| [d, orig_hashes[d] || '------'] }])
     end
   end
 end

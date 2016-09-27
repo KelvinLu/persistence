@@ -10,17 +10,17 @@ module Update
   @@base_dir = ''
   @@photo_dirs = []
 
-  def self.do(directory, photo_dirs)
+  def self.do(directory, photo_dirs, commands={})
     @@base_dir = File.absolute_path directory
     @@photo_dirs = photo_dirs
 
     @@gallery_erb = ERB.new File.read 'gallery.html.erb'
     @@index_erb = ERB.new File.read 'index.html.erb'
 
-    check
+    check commands
   end
 
-  def self.check
+  def self.check(commands={})
     orig_hashes = YAML.load File.read File.join(@@base_dir, 'Hashfile')
     tree_hashes = Hash[(`cd #{@@base_dir} && git ls-tree HEAD`.split "\n")
       .map { |o| o.split[1, 3] }
@@ -42,13 +42,13 @@ module Update
         .map { |o| [o[2], o[1][0, 32]] }
       ]
       generate_manifest photo_dir, blob_hashes
-      generate_resize photo_dir, blob_hashes
-      generate_gallery photo_dir
+      generate_resize photo_dir, blob_hashes if commands[:resize]
+      generate_gallery photo_dir if commands[:galleries]
     end
 
-    generate_index
+    generate_index if commands[:index]
 
-    File.write(File.join(@@base_dir, 'Hashfile'), YAML.dump(orig_hashes))
+    File.write(File.join(@@base_dir, 'Hashfile'), YAML.dump(orig_hashes)) unless commands[:clean]
   end
 
   def self.generate_manifest(photo_dir, blob_hashes)

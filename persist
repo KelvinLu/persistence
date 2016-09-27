@@ -1,9 +1,39 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
 require_relative 'lib/bootstrap'
 require_relative 'lib/update'
 
 BASE_DIR = './pictures-in-passing.github.io'
 
-photo_dirs = Bootstrap.do(BASE_DIR)
-Update.do(BASE_DIR, photo_dirs)
+options = {
+  clean: false,
+  resize: false,
+  galleries: false,
+  index: false
+}
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: persist [options]'
+
+  opts.on('-c', '--clean', 'Reset Hashfile, making all photo directories to appear updated') do |c|
+    options[:clean] = c
+  end
+  opts.on('-r', '--resize', 'Resize photos from updated photo directories and clean up orphaned resized photos') do |r|
+    options[:resize] = r
+  end
+  opts.on('-g', '--galleries', 'Regenerate gallery page for updated photo directories') do |g|
+    options[:galleries] = g
+  end
+  opts.on('-i', '--index', 'Regenerate index page') do |i|
+    options[:index] = i
+  end
+  opts.on('-u', '--update', 'Do all (resize, galleries, index) operations') do |i|
+    options[:resize] = true
+    options[:galleries] = true
+    options[:index] = true
+  end
+end.parse!
+
+photo_dirs = Bootstrap.do(BASE_DIR, options[:clean])
+Update.do(BASE_DIR, photo_dirs, options)
