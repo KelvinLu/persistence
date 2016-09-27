@@ -26,12 +26,12 @@ module Bootstrap
 
   def self.directories
     Dir.chdir(@@base_dir) do
-      Dir.glob('*').select { |f| File.directory? f }.reject { |f| f == '_resized' }.each do |d|
+        Dir.glob('*').select { |f| File.directory? f }.reject { |f| f.end_with? '~resized' }.each do |d|
         d_slug = Utils.slugify d
         FileUtils.mv d, d_slug unless d == d_slug
         @@photo_dirs << d_slug
 
-        FileUtils.mkdir_p File.join(@@base_dir, '_resized', d_slug)
+        FileUtils.mkdir_p File.join(@@base_dir, d_slug + '~resized')
         File.write(File.join(@@base_dir, d_slug + '.metadata'), JSON.generate({
           title: d_slug,
           description: 'This gallery has no description... how boring.'

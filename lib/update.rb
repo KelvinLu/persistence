@@ -77,7 +77,7 @@ module Update
         basename: f,
         filename: File.join('/', photo_dir, f),
         hash: blob_hashes[f],
-        resized: File.join('/', '_resized', photo_dir, blob_hashes[f] + File.extname(f))
+        resized: File.join('/', photo_dir + '~resized', blob_hashes[f] + File.extname(f))
       }
     end
     manifest.each do |o|
@@ -94,7 +94,7 @@ module Update
   def self.generate_resize(photo_dir, blob_hashes)
     puts "~ resized #{photo_dir}"
 
-    resizes = Dir.glob(File.join(@@base_dir, '_resized', photo_dir, '*')).map { |f| File.basename f }
+    resizes = Dir.glob(File.join(@@base_dir, photo_dir + '_resized', '*')).map { |f| File.basename f }
     resizes = Hash[resizes.map { |f| [f, File.basename(f, '.*')] }]
     photos = Dir.glob(File.join(@@base_dir, photo_dir, '*')).map { |f| File.basename f }
     photos = Hash[photos.map { |f| [f, blob_hashes[f]] }]
@@ -102,7 +102,7 @@ module Update
     resizes.each do |r, h|
       if not blob_hashes.has_value? h
         puts "  - #{r}"
-        FileUtils.rm File.join(@@base_dir, '_resized', photo_dir, r)
+        FileUtils.rm File.join(@@base_dir, photo_dir + '~resized', r)
       end
     end
 
@@ -112,7 +112,7 @@ module Update
         image = MiniMagick::Image.open(File.join(@@base_dir, photo_dir, p))
         image.combine_options do |i|
           i.resize '600x600>'
-          i.write File.join(@@base_dir, '_resized', photo_dir, h + File.extname(p))
+          i.write File.join(@@base_dir, photo_dir + '~resized', h + File.extname(p))
         end
       end
     end
