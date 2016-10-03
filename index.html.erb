@@ -15,7 +15,8 @@
             <% metadata['photo_dirs'].each do |photo_dir| %>
             <a id="<%= photo_dir['name'] %>" data-gallery-url="./<%= photo_dir['name'] %>.html">
                 <div class="photo-dir-card">
-                    <h2><%= photo_dir['name'] %></h2>
+                    <img class="bg-img" src="<%= photo_dir['manifest'][photo_dir['cover_num']]['resized'] %>">
+                    <h2><%= photo_dir['title'] %></h2>
                     <span style="font-style: italic;"><%= photo_dir['count'] %> photo<% if photo_dir['count'] > 1 %>s<% end %></span>
                     <p><%= photo_dir['description'] %></p>
                     <span class='link'><i class="fa fa-external-link"></i></span>

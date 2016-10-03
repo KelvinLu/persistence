@@ -32,13 +32,14 @@ module Bootstrap
         @@photo_dirs << d_slug
 
         FileUtils.mkdir_p File.join(@@base_dir, d_slug + '~resized')
-        File.write(File.join(@@base_dir, d_slug + '.metadata'), JSON.generate({
+        File.write(File.join(@@base_dir, d_slug + '.metadata'), JSON.pretty_generate({
           title: d_slug,
-          description: 'This gallery has no description... how boring.'
+          description: 'This gallery has no description... how boring.',
+          cover_num: 0
         })) unless File.exists? File.join(@@base_dir, d_slug + '.metadata')
       end
 
-      File.write(File.join(@@base_dir, 'index.metadata'), JSON.generate({
+      File.write(File.join(@@base_dir, 'index.metadata'), JSON.pretty_generate({
         title: 'My cool photoblog',
         photo_dirs: @@photo_dirs
       })) unless File.exists? File.join(@@base_dir, 'index.metadata')

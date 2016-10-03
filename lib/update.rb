@@ -73,12 +73,12 @@ module Update
 
       raise Exception, "#{f} has no Git blob (are the changes for #{photo_dir} committed?)" unless blob_hashes[f]
 
-      manifest << {
+      manifest.unshift({
         basename: f,
         filename: File.join('/', photo_dir, f),
         hash: blob_hashes[f],
         resized: File.join('/', photo_dir + '~resized', blob_hashes[f] + File.extname(f))
-      }
+      })
     end
     manifest.each do |o|
       f = o['basename']
@@ -88,7 +88,7 @@ module Update
       end
     end
 
-    File.write(m, JSON.generate(manifest))
+    File.write(m, JSON.pretty_generate(manifest))
   end
 
   def self.generate_resize(photo_dir, blob_hashes)
@@ -137,11 +137,19 @@ module Update
         metadata: JSON.parse(File.read(File.join(@@base_dir, 'index.metadata'))),
     }
 
-    render[:metadata]['photo_dirs'].map! { |photo_dir| {
-        'name' => photo_dir,
-        'description' => JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.metadata')))['description'],
-        'count' => JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.manifest'))).count
-    }}
+    render[:metadata]['photo_dirs'].map! do |photo_dir|
+        photo_dir_metadata = JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.metadata')))
+        photo_dir_manifest = JSON.parse(File.read(File.join(@@base_dir, photo_dir + '.manifest')))
+
+        {
+            'name' => photo_dir,
+            'title' => photo_dir_metadata['title'],
+            'description' => photo_dir_metadata['description'],
+            'count' => photo_dir_manifest.count,
+            'manifest' => photo_dir_manifest,
+            'cover_num' => photo_dir_metadata['cover_num']
+        }
+    end
 
     rendered = RenderHash.new(render).render(@@index_erb)
     File.write(File.join(@@base_dir, "index.html"), rendered)
