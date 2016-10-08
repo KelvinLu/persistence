@@ -64,11 +64,6 @@ div.column-middle {
     transform: translateX(-50%);
 }
 
-div#text {
-    background-color: rgba(40, 40, 40, 0.4);
-    padding: 1em;
-}
-
 img.sidenail {
     width: 100%;
     height: auto;
@@ -76,18 +71,17 @@ img.sidenail {
     transition: opacity 0.2s ease;
     opacity: 0.6;
 
-    margin: 2em;
+    margin-bottom: 2em;
 
-    border: 4px solid black;
+    border-bottom: 4px solid black;
 }
 
 img.sidenail:hover {
-    opacity: 0.8;
-    filter: blur(0px);
+    opacity: 1.0;
 
     cursor: pointer;
 
-    border: 4px solid white;
+    border-bottom: 4px solid white;
 }
 
 img.resized {
@@ -144,7 +138,7 @@ a#index {
 
 p#description {
     padding: 1em;
-    border-left: 4px solid white;
+    border-top: 4px solid white;
 }
 
 div#shroud {

@@ -54,12 +54,16 @@ div.photo-dir-card {
     overflow: hidden;
 
     transition: height 200ms ease;
+
+    border-bottom: 4px solid black;
 }
 
 div.photo-dir-card:hover {
     background-color: #2D2B2F;
 
     height: 8em;
+
+    border-bottom: 4px solid white;
 }
 
 div.photo-dir-card img.bg-img {
