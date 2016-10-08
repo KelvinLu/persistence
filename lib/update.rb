@@ -48,7 +48,7 @@ module Update
 
     generate_index if commands[:index]
 
-    File.write(File.join(@@base_dir, 'Hashfile'), YAML.dump(orig_hashes)) unless commands[:clean]
+    File.write(File.join(@@base_dir, 'Hashfile'), YAML.dump(orig_hashes))
   end
 
   def self.generate_manifest(photo_dir, blob_hashes)
