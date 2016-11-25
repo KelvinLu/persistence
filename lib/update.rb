@@ -94,7 +94,7 @@ module Update
   def self.generate_resize(photo_dir, blob_hashes)
     puts "~ resized #{photo_dir}"
 
-    resizes = Dir.glob(File.join(@@base_dir, photo_dir + '_resized', '*')).map { |f| File.basename f }
+    resizes = Dir.glob(File.join(@@base_dir, photo_dir + '~resized', '*')).map { |f| File.basename f }
     resizes = Hash[resizes.map { |f| [f, File.basename(f, '.*')] }]
     photos = Dir.glob(File.join(@@base_dir, photo_dir, '*')).map { |f| File.basename f }
     photos = Hash[photos.map { |f| [f, blob_hashes[f]] }]
